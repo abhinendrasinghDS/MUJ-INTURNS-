@@ -2,17 +2,22 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { GlassCard } from '../components/GlassCard';
-import { Sparkles, Mail, Lock, ArrowRight } from 'lucide-react';
+import { Sparkles, Mail, Lock, User, Building2, ArrowRight } from 'lucide-react';
 
 export function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState<'student' | 'company'>('student');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock login - navigate to student dashboard
-    navigate('/student/dashboard');
+    // Navigate based on selected role
+    if (role === 'company') {
+      navigate('/company/dashboard');
+    } else {
+      navigate('/student/dashboard');
+    }
   };
 
   return (
@@ -34,6 +39,34 @@ export function LoginPage() {
         </div>
 
         <GlassCard className="p-8">
+          {/* Role Toggle */}
+          <div className="flex gap-2 p-1 bg-muted rounded-xl mb-6">
+            <button
+              type="button"
+              onClick={() => setRole('student')}
+              className={`flex-1 py-2 px-4 rounded-lg transition-all flex items-center justify-center gap-2 ${
+                role === 'student'
+                  ? 'bg-primary text-white shadow-md'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <User className="w-4 h-4" />
+              Student
+            </button>
+            <button
+              type="button"
+              onClick={() => setRole('company')}
+              className={`flex-1 py-2 px-4 rounded-lg transition-all flex items-center justify-center gap-2 ${
+                role === 'company'
+                  ? 'bg-secondary text-white shadow-md'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <Building2 className="w-4 h-4" />
+              Company
+            </button>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
@@ -83,7 +116,9 @@ export function LoginPage() {
 
             <button
               type="submit"
-              className="w-full py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-all hover:scale-[1.02] flex items-center justify-center gap-2 shadow-lg"
+              className={`w-full py-3 text-white rounded-xl transition-all hover:scale-[1.02] flex items-center justify-center gap-2 shadow-lg ${
+                role === 'student' ? 'bg-primary hover:bg-primary/90' : 'bg-secondary hover:bg-secondary/90'
+              }`}
             >
               Sign In
               <ArrowRight className="w-5 h-5" />

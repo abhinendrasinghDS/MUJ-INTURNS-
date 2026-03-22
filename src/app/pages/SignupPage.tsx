@@ -16,7 +16,7 @@ export function SignupPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate('/verify-otp');
+    navigate(`/verify-otp?role=${role}`);
   };
 
   return (

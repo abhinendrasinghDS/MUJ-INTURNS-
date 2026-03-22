@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate, useSearchParams } from 'react-router';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { GlassCard } from '../components/GlassCard';
 import { Sparkles, Mail, ArrowRight } from 'lucide-react';
 
 export function OTPVerification() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const role = searchParams.get('role') || 'student';
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
 
   const handleChange = (index: number, value: string) => {
@@ -23,7 +25,11 @@ export function OTPVerification() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate('/student/dashboard');
+    if (role === 'company') {
+      navigate('/company/dashboard');
+    } else {
+      navigate('/student/dashboard');
+    }
   };
 
   return (
